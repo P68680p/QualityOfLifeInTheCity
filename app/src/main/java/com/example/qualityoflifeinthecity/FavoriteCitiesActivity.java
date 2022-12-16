@@ -22,7 +22,6 @@ public class FavoriteCitiesActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("-------> inside of FavoriteCitiesActivity -> onCreate(Bundle savedInstanceState)");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_cities);
         this.setTitle("My Favorite Cities");
@@ -35,25 +34,18 @@ public class FavoriteCitiesActivity extends AppCompatActivity
         adapter.setOnItemClickListener(new CitiesAdapter.OnItemForDeleteClickListener() {
             @Override
             public void onItemClick(int position) {
-                System.out.println("-------> inside of FavoriteCitiesActivity -> onCreate(Bundle savedInstanceState) -> onItemClick(int position)");
                 //delete item from DB
-                System.out.println("----------------------> favCityList.get(position).city= " + favCityList.get(position).city);
-                System.out.println("----------------------> favCityList.get(position).id= " + favCityList.get(position).id);
                 ((MyApp) getApplication()).dbManager.deleteACity(favCityList.get(position));
-                //now delete from Arraylist
+                //delete from Arraylist
                 favCityList.remove(position);
-                System.out.println("------->remove item from favoritelist");
-                //then notify adapter
+                //notify adapter
                 adapter.notifyItemRemoved(position);
-                System.out.println("------->notify adapter");
-
             }
         });
     }
 
     @Override
     protected void onResume() {
-        System.out.println("--------> inside of FavoriteCitiesActivity -> onResume()");
         super.onResume();
         ((MyApp) getApplication()).dbManager.getDB(this);
         ((MyApp) getApplication()).dbManager.getAllCities();
@@ -63,7 +55,6 @@ public class FavoriteCitiesActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        System.out.println("--------> inside of FavoriteCitiesActivity -> onCreateOptionsMenu(Menu menu)");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_menu, menu);
         return true;
@@ -71,7 +62,6 @@ public class FavoriteCitiesActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        System.out.println("--------> inside of FavoriteCitiesActivity -> onOptionsItemSelected(MenuItem item)");
         switch (item.getItemId()) {
             case R.id.add:
                 Intent i = new Intent(this, SearchCities.class);
@@ -83,7 +73,6 @@ public class FavoriteCitiesActivity extends AppCompatActivity
 
     @Override
     public void gettingCitiesCompleted(City[] list) {
-        System.out.println("--------> inside of FavoriteCitiesActivity -> gettingCitiesCompleted(City[] list)");
         favCityList = new ArrayList(Arrays.asList(list));
         adapter.list = favCityList;
         adapter.notifyDataSetChanged();
@@ -91,7 +80,6 @@ public class FavoriteCitiesActivity extends AppCompatActivity
 
     @Override
     public void onClicked(int position) {
-        System.out.println("-------> inside of FavoriteCitiesActivity -> onClicked(int pos)");
         Intent i = new Intent(this, DetailsActivity.class);
         i.putExtra("city", favCityList.get(position));
         startActivity(i);

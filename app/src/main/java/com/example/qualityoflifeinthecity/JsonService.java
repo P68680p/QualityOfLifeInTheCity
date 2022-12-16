@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class JsonService {
 
     static ArrayList<City> getCityListFromJSON(String jsonString) {
-        System.out.println("--------> inside of JsonService -> getCityListFromJSON");
         ArrayList<City> list = new ArrayList<>(0);
         try {
             JSONObject json = new JSONObject(jsonString).getJSONObject("_embedded");
@@ -28,7 +27,6 @@ public class JsonService {
     }
 
     static String getUrbanAreaLinkFromJSON(String jsonString) { //geoname_id
-        System.out.println("--------> inside of JsonService -> getUrbanAreaLinkFromJSON(String jsonString)");
         String ua = "";
         try {
             JSONObject jsonObject = new JSONObject(jsonString).getJSONObject("_links").getJSONObject("city:urban_area");
@@ -40,24 +38,15 @@ public class JsonService {
     }
 
     static DetailsObject fromJsonToDetailsLinks(String jsonString) {
-        System.out.println("--------> inside of JsonService -> fromJsonToDetailsLinks(String jsonString)");
-        System.out.println("--------> fromJsonToDetails parameter jsonString = " + jsonString);
         DetailsObject detObj = new DetailsObject();
-
         try {
             JSONObject jsonObjectImg = new JSONObject(jsonString).getJSONObject("_links").getJSONObject("ua:images");
             detObj.setCityImage_link(jsonObjectImg.getString("href"));
-
-            JSONObject jsonObjectSal = new JSONObject(jsonString).getJSONObject("_links").getJSONObject("ua:salaries");
-            detObj.setSalary_link(jsonObjectSal.getString("href"));
-
             JSONObject jsonObjectScor = new JSONObject(jsonString).getJSONObject("_links").getJSONObject("ua:scores");
             detObj.setScore_link(jsonObjectScor.getString("href"));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(detObj.showDetailsLinks());
         return detObj;
     }
 

@@ -21,10 +21,8 @@ public class NetworkingService {
         void getUrbanAreaFromGeonameIdIsCompleted(String geoname);
         void getDetailsLinksFromUrbanAreaIsCompleted(String ua);
         void getImgLinkFromDetail(String img);
-        void getSalLinkFromDetail(String sal);
         void getScorLinkFromDetail(String scor);
         void gettingImageIsCompleted(Bitmap image);
-
     }
 
     NetworkingListener listener;
@@ -32,23 +30,17 @@ public class NetworkingService {
 
     //URLs
     String cityURLString = "https://api.teleport.org/api/cities/?search=";
-    String iconURL1 = "http://openweathermap.org/img/wn/";
-    String iconURL2 = "@2x.png";
 
     void getAllCities(String query) {
-        System.out.println("--------> inside of NetworkingService -> getAllCities");
         String fullString = cityURLString + query;
         connect(fullString, "");
     }
 
     void getUrbanArea(String geoname_id){
-        System.out.println("--------> inside of NetworkingService -> getUrbanArea(String geoname_id)");
         connect(geoname_id, "callFromGeoname");
     }
 
     void getDetailsLinksFromUrbanArea(String urbanArea) {
-        System.out.println("--------> inside of NetworkingService -> getDetailsLinksFromUrbanArea(String urbanArea)");
-        System.out.println("--------> inside of NetworkingService -> getDetailsLinksFromUrbanArea(String urbanArea) -> parameter = "+urbanArea);
         connect(urbanArea, "callFromUrban");
     }
 
@@ -59,8 +51,8 @@ public class NetworkingService {
     void getScoreFromLink(String scoreLink){
         connect(scoreLink,"callScoreFromDetail");
     }
+
     void connect(String urlString, String myCallBack) {
-        System.out.println("--------> inside of NetworkingService -> connect-> parameters = "+urlString+", "+myCallBack);
         MyApp.executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -74,12 +66,10 @@ public class NetworkingService {
                     while ((value = in.read()) != -1) {
                         buffer.append((char) value);
                     }
-//                    System.out.println("------>buffer = " + buffer);
                     // the json content is ready to returned back
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println("--------> inside of NetworkingService -> handler.post run");
                             if (myCallBack=="callFromGeoname"){
                                 listener.getUrbanAreaFromGeonameIdIsCompleted(buffer.toString());
                             }
@@ -89,9 +79,6 @@ public class NetworkingService {
                             else if(myCallBack=="callImgFromDetail"){
                                 listener.getImgLinkFromDetail(buffer.toString());
                             }
-//                            else if(myCallBack=="callSalFromDetail"){
-//                                listener.getSalLinkFromDetail(buffer.toString());
-//                            }
                             else if(myCallBack=="callScoreFromDetail"){
                                 listener.getScorLinkFromDetail(buffer.toString());
                             }
@@ -114,14 +101,13 @@ public class NetworkingService {
     }
 
     void gettingImage(String icon) {
-        System.out.println("--------> inside of gettingImage(String icon) parameters = "+icon);
         MyApp.executorService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     int value = 0;
                     URL url = new URL(icon);
-                    InputStream in = url.openStream();//new BufferedInputStream(urlConnection.getInputStream());
+                    InputStream in = url.openStream();
                     Bitmap imageData = BitmapFactory.decodeStream(in);
 
                     handler.post(new Runnable() {

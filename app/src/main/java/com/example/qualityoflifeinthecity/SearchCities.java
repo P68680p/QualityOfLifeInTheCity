@@ -24,7 +24,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("--------> inside of SearchCities -> onCreate(Bundle savedInstanceState)");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_cities);
 
@@ -42,7 +41,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        System.out.println("--------> inside of SearchCities -> onCreateOptionsMenu(Menu menu)");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.city_search_menu, menu);
         MenuItem searchViewMenu = menu.findItem(R.id.city_searchview);
@@ -56,7 +54,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                System.out.println("--------> inside of SearchCities -> onCreateOptionsMenu(Menu menu) -> onQueryTextChange");
                 if (newText.length() >= 3) {
                     ((MyApp) getApplication()).networkingService.getAllCities(newText);
                 } else {
@@ -71,7 +68,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     public void getSearchCitiesIsCompleted(String json) {
-        System.out.println("--------> inside of SearchCities -> getSearchCitiesIsCompleted");
         // json is a string ==> Json Array of Strings
         // for Recycler view I need ArrayList <City>
         list = JsonService.getCityListFromJSON(json);
@@ -81,23 +77,18 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     public void onItemClicked(int post) {
-        System.out.println("--------> inside of SearchCities -> onItemClicked");
         // show an alert
         // save the city
         showAlert(list.get(post));
     }
 
     void showAlert(City city) {
-        System.out.println("--------> inside of SearchCities -> showAlert");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hello!");
-//        builder.setIcon(R.drawable.ic_baseline_favorite_24);
         builder.setMessage("Would you like to save " + city.city + " to the list of your favorite cities?");
-        //builder.setNegativeButtonIcon(R.drawable.ic_baseline_thumb_down_24);
         builder.setNegativeButton("No", null);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                System.out.println("--------> inside of SearchCities -> showAlert -> onClick(DialogInterface dialog, int id)");
                 ((MyApp) getApplication()).dbManager.insertNewCityAsync(city);
             }
         });
@@ -106,7 +97,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     public void insertingCityCompleted() {
-        System.out.println("--------> inside of SearchCities -> insertingCityCompleted()");
         finish();
     }
 
@@ -129,10 +119,6 @@ public class SearchCities extends AppCompatActivity implements NetworkingService
 
     @Override
     public void getImgLinkFromDetail(String img) {
-    }
-
-    @Override
-    public void getSalLinkFromDetail(String sal) {
     }
 
     @Override
