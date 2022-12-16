@@ -20,6 +20,7 @@ public class FavoriteCitiesActivity extends AppCompatActivity
     CitiesAdapter adapter;
     ArrayList<City> favCityList = new ArrayList<>(0);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
